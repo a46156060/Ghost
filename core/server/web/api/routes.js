@@ -220,5 +220,9 @@ module.exports = function apiRoutes() {
     apiRouter.post('/webhooks', mw.authenticatePrivate, api.http(api.webhooks.add));
     apiRouter.del('/webhooks/:id', mw.authenticatePrivate, api.http(api.webhooks.destroy));
 
+    // Contacts
+    apiRouter.get('/contacts', api.http(api.contacts.browse));
+    apiRouter.post('/contacts', api.http(api.contacts.add));
+
     return apiRouter;
 };

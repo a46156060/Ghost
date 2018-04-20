@@ -30,7 +30,8 @@ models = [
     'tag',
     'user',
     'invite',
-    'webhook'
+    'webhook',
+    'contact'
 ];
 
 function init() {

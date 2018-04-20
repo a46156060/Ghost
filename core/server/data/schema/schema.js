@@ -301,5 +301,13 @@ module.exports = {
         created_by: {type: 'string', maxlength: 24, nullable: false},
         updated_at: {type: 'dateTime', nullable: true},
         updated_by: {type: 'string', maxlength: 24, nullable: true}
+    },
+    contacts: {
+        id: {type: 'string', maxlength: 24, nullable: false, primary: true},
+        name: {type: 'string', maxlength: 191, nullable: false},
+        phone_number: {type: 'string', maxlength: 18, nullable: false},
+        email: {type: 'string', maxlength: 191, nullable: false, validations: {isEmail: true}},
+        content: {type: 'text', maxlength: 65535, nullable: true, validations: {isLength: {max: 500}}},
+        created_at: {type: 'dateTime', nullable: false}
     }
 };
