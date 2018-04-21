@@ -14328,27 +14328,30 @@ e!==this._lastIsSelected&&(e?this._fireWhenRendered(this._onSelect):this._fireWh
 if(t||r)n&&t&&!r&&(this.editCard(),this.set("showToolbar",!0),e.preventDefault())
 else{this.selectCard(),this.set("showToolbar",!0)
 var i=e.target.tagName;["INPUT","TEXTAREA"].includes(i)||e.preventDefault()}},doubleClick:function(){this.get("hasEditMode")&&!this.get("isEditing")&&(this.editCard(),this.set("showToolbar",!0))},_onSelect:function(){this._fireWhenRendered(this._showToolbar),this._showToolbar(),this.onSelect()},_onDeselect:function(){this._hideToolbar(),this.onDeselect()},_onEnterEdit:function(){this._onKeydownHandler=Ember.run.bind(this,this._handleKeydown),window.addEventListener("keydown",this._onKeydownHandler),this.onEnterEdit()},_onLeaveEdit:function(){window.removeEventListener("keydown",this._onKeydownHandler),this.onLeaveEdit()},_setToolbarProperties:function(){if(this.get("toolbar")){var e=this.element.querySelector('[data-toolbar="true"]').getBoundingClientRect(),t=e.width,r=e.height
-this.setProperties({toolbarWidth:t,toolbarHeight:r+8})}},_showToolbar:function(){this.get("toolbar")&&(this.get("showToolbar")||this._onMousemoveHandler||(this._onMousemoveHandler=Ember.run.bind(this,this._handleMousemove),window.addEventListener("mousemove",this._onMousemoveHandler)))},_hideToolbar:function(){this.set("showToolbar",!1),this._removeMousemoveHandler()},_handleKeydown:function(e){"Escape"===e.code&&this.get("isEditing")&&(this.selectCard(!1),e.preventDefault())},_handleMousemove:function(){this.get("showToolbar")||(this.set("showToolbar",!0),this._removeMousemoveHandler())},_removeMousemoveHandler:function(){window.removeEventListener("mousemove",this._onMousemoveHandler),this._onMousemoveHandler=null},_fireWhenRendered:function(e){this.element?Ember.run.bind(this,e)():Ember.run.scheduleOnce("afterRender",this,e)}})}),define("koenig-editor/components/koenig-editor",["exports","mobiledoc-kit/editor/editor","koenig-editor/options/atoms","koenig-editor/options/cards","koenig-editor/templates/components/koenig-editor","koenig-editor/options/key-commands","koenig-editor/options/text-expansions","mobiledoc-kit/renderers/mobiledoc"],function(e,t,r,n,i,o,a,s){"use strict"
-function l(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}Object.defineProperty(e,"__esModule",{value:!0}),e.CARD_COMPONENT_MAP=e.BLANK_DOC=e.TESTING_EXPANDO_PROPERTY=e.REMOVE_CARD_HOOK=e.ADD_CARD_HOOK=void 0
-var u=e.ADD_CARD_HOOK="addComponent",c=e.REMOVE_CARD_HOOK="removeComponent",d=e.TESTING_EXPANDO_PROPERTY="__mobiledoc_kit_editor",f=e.BLANK_DOC={version:s.MOBILEDOC_VERSION,markups:[],atoms:[],cards:[],sections:[[1,"p",[[0,[],0,""]]]]},h=e.CARD_COMPONENT_MAP={hr:"koenig-card-hr",image:"koenig-card-image",markdown:"koenig-card-markdown","card-markdown":"koenig-card-markdown",html:"koenig-card-html"}
-function p(e){var t=Object.create(null)
+this.setProperties({toolbarWidth:t,toolbarHeight:r+8})}},_showToolbar:function(){this.get("toolbar")&&(this.get("showToolbar")||this._onMousemoveHandler||(this._onMousemoveHandler=Ember.run.bind(this,this._handleMousemove),window.addEventListener("mousemove",this._onMousemoveHandler)))},_hideToolbar:function(){this.set("showToolbar",!1),this._removeMousemoveHandler()},_handleKeydown:function(e){"Escape"===e.code&&this.get("isEditing")&&(this.selectCard(!1),e.preventDefault())},_handleMousemove:function(){this.get("showToolbar")||(this.set("showToolbar",!0),this._removeMousemoveHandler())},_removeMousemoveHandler:function(){window.removeEventListener("mousemove",this._onMousemoveHandler),this._onMousemoveHandler=null},_fireWhenRendered:function(e){this.element?Ember.run.bind(this,e)():Ember.run.scheduleOnce("afterRender",this,e)}})}),define("koenig-editor/components/koenig-editor",["exports","mobiledoc-kit/editor/editor","koenig-editor/options/atoms","koenig-editor/options/cards","koenig-editor/templates/components/koenig-editor","koenig-editor/options/key-commands","koenig-editor/options/text-expansions","npm:validator","mobiledoc-kit/renderers/mobiledoc","mobiledoc-kit/utils/parse-utils"],function(e,t,r,n,i,o,a,s,l,u){"use strict"
+function c(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}Object.defineProperty(e,"__esModule",{value:!0}),e.CARD_COMPONENT_MAP=e.BLANK_DOC=e.TESTING_EXPANDO_PROPERTY=e.REMOVE_CARD_HOOK=e.ADD_CARD_HOOK=void 0
+var d=e.ADD_CARD_HOOK="addComponent",f=e.REMOVE_CARD_HOOK="removeComponent",h=e.TESTING_EXPANDO_PROPERTY="__mobiledoc_kit_editor",p=e.BLANK_DOC={version:l.MOBILEDOC_VERSION,markups:[],atoms:[],cards:[],sections:[[1,"p",[[0,[],0,""]]]]},m=e.CARD_COMPONENT_MAP={hr:"koenig-card-hr",image:"koenig-card-image",markdown:"koenig-card-markdown","card-markdown":"koenig-card-markdown",html:"koenig-card-html"},b={S:"~~",CODE:"`"}
+function g(e){var t=Object.create(null)
 return e.forEach(function(e){e&&(e="is"+Ember.String.capitalize(Ember.String.camelize(e)),t[e]=!0)}),t}e.default=Ember.Component.extend({layout:i.default,tagName:"article",classNames:["koenig-editor"],mobiledoc:null,placeholder:"Write here...",autofocus:!1,spellcheck:!0,options:null,scrollContainer:"",editor:null,activeMarkupTagNames:null,activeSectionTagNames:null,selectedRange:null,componentCards:null,linkRange:null,_localMobiledoc:null,_upstreamMobiledoc:null,_startedRunLoop:!1,_lastIsEditingDisabled:!1,_isRenderingEditor:!1,_selectedCard:null,willCreateEditor:function(){},didCreateEditor:function(){},onChange:function(){},cursorDidExitAtTop:function(){},editorOptions:Ember.computed(function(){var e=this.get("options")||{},t=this.get("atoms")||[],i=this.get("cards")||[]
 return t=Array.concat(r.default,t),i=Array.concat(n.default,i),Ember.assign({placeholder:this.get("placeholder"),spellcheck:this.get("spellcheck"),autofocus:this.get("autofocus"),atoms:t,cards:i},e)}),init:function(){this._super.apply(this,arguments)
 var e=this.get("mobiledoc")
-e||(e=f,this.set("mobiledoc",e)),this.set("componentCards",Ember.A([])),this.set("activeMarkupTagNames",{}),this.set("activeSectionTagNames",{}),this._startedRunLoop=!1},willRender:function(){var e,r=this,n=this.get("mobiledoc")||f,i=this._localMobiledoc&&this._localMobiledoc===n||this._upstreamMobiledoc&&this._upstreamMobiledoc===n,s=this._lastIsEditingDisabled===this.get("isEditingDisabled")
+e||(e=p,this.set("mobiledoc",e)),this.set("componentCards",Ember.A([])),this.set("activeMarkupTagNames",{}),this.set("activeSectionTagNames",{}),this._startedRunLoop=!1},willRender:function(){var e,r=this,n=this.get("mobiledoc")||p,i=this._localMobiledoc&&this._localMobiledoc===n||this._upstreamMobiledoc&&this._upstreamMobiledoc===n,s=this._lastIsEditingDisabled===this.get("isEditingDisabled")
 if(!i||!s){this._lastIsEditingDisabled=this.get("isEditingDisabled"),this._upstreamMobiledoc=n,this._localMobiledoc=null,this.willCreateEditor()
-var d=this.get("editor")
-d&&d.destroy()
-var p=this.get("editorOptions")
-p.mobiledoc=n,p.showLinkTooltips=!1
-var m=(l(e={},u,function(e){var t=e.env,n=e.options,i=e.payload,o=Ember.uuid(),a=t.name,s=h[a],l="koenig-editor-card-"+o,u=document.createElement("div")
-u.id=l,i=Ember.copy(i,!0)
-var c=Ember.Object.create({destinationElement:u,destinationElementId:l,cardName:a,componentName:s,payload:i,env:t,options:n,editor:d,postModel:t.postModel,isSelected:!1,isEditing:!1})
-return Ember.run.schedule("afterRender",function(){r.get("componentCards").pushObject(c)}),{card:c,element:u}}),l(e,c,function(e){r.get("componentCards").removeObject(e)}),e)
-p.cardOptions=m,d=new t.default(p),(0,o.default)(d),(0,a.default)(d),d.registerKeyCommand({str:"DEL",run:Ember.run.bind(this,this.handleDelKey)}),d.registerKeyCommand({str:"BACKSPACE",run:Ember.run.bind(this,this.handleBackspaceKey)}),d.registerKeyCommand({str:"UP",run:Ember.run.bind(this,this.handleUpKey)}),d.registerKeyCommand({str:"LEFT",run:Ember.run.bind(this,this.handleLeftKey)}),d.registerKeyCommand({str:"META+ENTER",run:Ember.run.bind(this,this.handleCmdEnter)}),d.willRender(function(){Ember.run.currentRunLoop||(r._startedRunLoop=!0,Ember.run.begin())}),d.didRender(function(){r._startedRunLoop&&(r._startedRunLoop=!1,Ember.run.end())}),d.postDidChange(function(){Ember.run.join(function(){r.postDidChange(d)})}),d.cursorDidChange(function(){Ember.run.join(function(){r.cursorDidChange(d)})}),d.inputModeDidChange(function(){r.isDestroyed||Ember.run.join(function(){r.inputModeDidChange(d)})}),this.get("isEditingDisabled")&&d.disableEditing(),this.set("editor",d),this.didCreateEditor(d)}},didRender:function(){this._super.apply(this,arguments)
+var l=this.get("editor")
+l&&l.destroy()
+var u=this.get("editorOptions")
+u.mobiledoc=n,u.showLinkTooltips=!1
+var h=(c(e={},d,function(e){var t=e.env,n=e.options,i=e.payload,o=Ember.uuid(),a=t.name,s=m[a],u="koenig-editor-card-"+o,c=document.createElement("div")
+c.id=u,i=Ember.copy(i,!0)
+var d=Ember.Object.create({destinationElement:c,destinationElementId:u,cardName:a,componentName:s,payload:i,env:t,options:n,editor:l,postModel:t.postModel,isSelected:!1,isEditing:!1})
+return Ember.run.schedule("afterRender",function(){r.get("componentCards").pushObject(d)}),{card:d,element:c}}),c(e,f,function(e){r.get("componentCards").removeObject(e)}),e)
+u.cardOptions=h,l=new t.default(u),(0,o.default)(l),(0,a.default)(l),l.registerKeyCommand({str:"ENTER",run:Ember.run.bind(this,this.handleEnterKey,l)}),l.registerKeyCommand({str:"DEL",run:Ember.run.bind(this,this.handleDelKey,l)}),l.registerKeyCommand({str:"BACKSPACE",run:Ember.run.bind(this,this.handleBackspaceKey,l)}),l.registerKeyCommand({str:"UP",run:Ember.run.bind(this,this.handleUpKey,l)}),l.registerKeyCommand({str:"LEFT",run:Ember.run.bind(this,this.handleLeftKey,l)}),l.registerKeyCommand({str:"META+ENTER",run:Ember.run.bind(this,this.handleCmdEnter,l)}),l.willRender(function(){Ember.run.currentRunLoop||(r._startedRunLoop=!0,Ember.run.begin())}),l.didRender(function(){r._startedRunLoop&&(r._startedRunLoop=!1,Ember.run.end())}),l.postDidChange(function(){Ember.run.join(function(){r.postDidChange(l)})}),l.cursorDidChange(function(){Ember.run.join(function(){r.cursorDidChange(l)})}),l.inputModeDidChange(function(){r.isDestroyed||Ember.run.join(function(){r.inputModeDidChange(l)})}),this.get("isEditingDisabled")&&l.disableEditing(),this.set("editor",l),this.didCreateEditor(l)}},didInsertElement:function(){this._super.apply(this,arguments)
+var e=this.element.querySelector(".koenig-editor__editor")
+this._pasteHandler=Ember.run.bind(this,this.handlePaste),e.addEventListener("paste",this._pasteHandler)},didRender:function(){this._super.apply(this,arguments)
 var e=this.get("editor")
 if(!e.hasRendered){var t=this.element.querySelector(".koenig-editor__editor")
-this._isRenderingEditor=!0,e.render(t),this._isRenderingEditor=!1}},willDestroyElement:function(){this.get("editor").destroy(),this._super.apply(this,arguments)},actions:{toggleMarkup:function(e){this.get("editor").toggleMarkup(e)},toggleSection:function(e){this.get("editor").toggleSection(e)},replaceWithCardSection:function(e,t){var r=this.get("editor"),n=t.head.section
+this._isRenderingEditor=!0,e.render(t),this._isRenderingEditor=!1}},willDestroyElement:function(){var e=this.get("editor")
+this.element.querySelector(".koenig-editor__editor").removeEventListener("paste",this._pasteHandler),e.destroy(),this._super.apply(this,arguments)},actions:{toggleMarkup:function(e){this.get("editor").toggleMarkup(e)},toggleSection:function(e){this.get("editor").toggleSection(e)},replaceWithCardSection:function(e,t){var r=this.get("editor"),n=t.head.section
 r.run(function(t){var r=t.builder.createCardSection(e),i=!n.next
 if(t.replaceSection(n,r),i){var o=t.builder.createMarkupSection("p")
 t.insertSectionAtEnd(o),t.setRange(o.tailPosition())}}),Ember.run.schedule("afterRender",this,function(){var e=this.get("componentCards.lastObject")
@@ -14360,31 +14363,45 @@ this.deselectCard(e),t.run(function(e){var t=e.builder.createMarkupSection("p")
 i?e.insertSectionBefore(n,t,i):e.insertSectionAtEnd(t),e.setRange(t.tailPosition())})}},postDidChange:function(e){var t=this.get("serializeVersion"),r=e.serialize(t)
 this._localMobiledoc=r,this.onChange(r)},cursorDidChange:function(e){var t=this,r=e.range,n=r.head,i=r.isCollapsed,o=r.head.section
 if(this._skipCursorChange)return this._skipCursorChange=!1,void this.set("selectedRange",e.range)
-this._selectedCard&&this._selectedCard.postModel===o||(!o||!i||"card-section"!==o.type||0!==n.offset&&1!==n.offset?(this._selectedCard&&this.deselectCard(this._selectedCard),this.set("selectedRange",e.range)):Ember.run.schedule("afterRender",this,function(){var r=t._getCardFromSection(o)
-t.selectCard(r),t.set("selectedRange",e.range)}))},inputModeDidChange:function(e){var t=this,r=p(e.activeMarkups.map(function(e){return e.tagName})),n=p(e.activeSections.map(function(e){return e.isNested?e.parent.tagName:e.tagName}))
-this._isRenderingEditor?Ember.run.schedule("afterRender",function(){t.set("activeMarkupTagNames",r),t.set("activeSectionTagNames",n)}):(this.set("activeMarkupTagNames",r),this.set("activeSectionTagNames",n))},handleBackspaceKey:function(){var e=this.editor.range,t=e.isCollapsed,r=e.head,n=r.offset,i=r.section
-if(this._selectedCard){var o=i.prev?-1:1
-this._deleteCard(this._selectedCard,o)}else{if(i===i.parent.sections.head&&t&&0===n&&(i.isBlank||""===i.text)&&i.next)this.editor.run(function(e){e.removeSection(i)})
-else{if(!t||0!==n||!i.prev||"card-section"!==i.prev.type||i.isBlank)return!1
-var a=this._getCardFromSection(i.prev)
-this._deleteCard(a,1)}}},handleDelKey:function(){var e=this.editor.range,t=e.isCollapsed,r=e.head,n=r.offset,i=r.section
-if(this._selectedCard){var o="card-section"===i.next.type,a=this._getCardFromSection(i.next)
-return this._deleteCard(this._selectedCard,1),void(o&&this.selectCard(a))}if(!t||n!==i.length||!i.next||"card-section"!==i.next.type||i.isBlank)return!1
-var s=this._getCardFromSection(i.next)
-this._deleteCard(s,-1)},handleUpKey:function(e){var t=e.range,r=t.isCollapsed,n=t.head,i=n.offset,o=n.section,a=o.isListItem?o.parent.prev:o.prev
+this._selectedCard&&this._selectedCard.postModel===o||(!o||!i||"card-section"!==o.type||0!==n.offset&&1!==n.offset?(this._selectedCard&&this.deselectCard(this._selectedCard),i&&n.marker&&Object.keys(b).forEach(function(r){if(n.marker.hasMarkup(r)){var i=n.markerIn(1)
+i&&i.hasMarkup(r)||Ember.run.next(t,function(){e.toggleMarkup(r)})}}),this.set("selectedRange",e.range)):Ember.run.schedule("afterRender",this,function(){var r=t._getCardFromSection(o)
+t.selectCard(r),t.set("selectedRange",e.range)}))},inputModeDidChange:function(e){var t=this,r=g(e.activeMarkups.map(function(e){return e.tagName})),n=g(e.activeSections.map(function(e){return e.isNested?e.parent.tagName:e.tagName})),i=e.range,o=i.head
+if(i.isCollapsed){var a=e.activeMarkups.mapBy("tagName")
+Object.keys(b).forEach(function(t){if(a.includes(t.toLowerCase())){var r=o.markerIn(1)
+if(!r||!r.hasMarkup(t))return e.toggleMarkup(t)}})}this._isRenderingEditor?Ember.run.schedule("afterRender",function(){t.set("activeMarkupTagNames",r),t.set("activeSectionTagNames",n)}):(this.set("activeMarkupTagNames",r),this.set("activeSectionTagNames",n))},handleEnterKey:function(e){var t=e.range,r=t.isCollapsed,n=t.head,i=n.offset,o=n.section
+if(!r||0!==i||!o.tagName.match(/^h\d$/))return!1
+e.run(function(e){var t=e.builder.createMarkupSection("p"),r=o.parent.sections
+e.insertSectionBefore(r,t,o)})},handleBackspaceKey:function(e){var t=e.range,r=t.head,n=t.isCollapsed,i=t.head,o=i.marker,a=i.offset,s=i.section
+if(this._selectedCard){var l=s.prev?-1:1
+this._deleteCard(this._selectedCard,l)}else{if(s===s.parent.sections.head&&n&&0===a&&(s.isBlank||""===s.text)&&s.next)this.editor.run(function(e){e.removeSection(s)})
+else if(n&&0===a&&s.prev&&"card-section"===s.prev.type&&!s.isBlank){var u=this._getCardFromSection(s.prev)
+this._deleteCard(u,1)}else{if(!(n&&0===a&&s.tagName.match(/^h\d$/)&&"p"===s.prev.tagName&&s.prev.isBlank)){if(n&&o){var c=!1
+if(Object.keys(b).forEach(function(t){var n=o.markups.find(function(e){return e.tagName.toUpperCase()===t})
+if(n){var i=r.markerIn(1)
+i&&i.hasMarkup(t)||(e.run(function(r){var i=b[t],o=e.range.expandByMarker(function(e){return!!e.markups.includes(n)})
+r.insertText(o.head,i),o=o.extend(i.length)
+var a=r.insertText(o.tail,i)
+o=o.extend(i.length),r.toggleMarkup(t,o),a=r.deleteAtPosition(a,-1),r.setRange(a)}),c=!0)}}),c)return}return!1}e.run(function(e){e.removeSection(s.prev)})}}},handleDelKey:function(e){var t=e.range,r=t.isCollapsed,n=t.head,i=n.offset,o=n.section
+if(this._selectedCard){var a="card-section"===o.next.type,s=this._getCardFromSection(o.next)
+return this._deleteCard(this._selectedCard,1),void(a&&this.selectCard(s))}if(!r||i!==o.length||!o.next||"card-section"!==o.next.type||o.isBlank)return!1
+var l=this._getCardFromSection(o.next)
+this._deleteCard(l,-1)},handleUpKey:function(e){var t=e.range,r=t.isCollapsed,n=t.head,i=n.offset,o=n.section,a=o.isListItem?o.parent.prev:o.prev
 return r&&0===i&&!a&&this.cursorDidExitAtTop(),!1},handleLeftKey:function(e){var t=e.range,r=t.isCollapsed,n=t.head,i=n.offset,o=n.section,a=o.isListItem?o.parent.prev:o.prev
 if(!r||0!==i||a){if(!this._selectedCard||this._selectedCard.postModel!==o)return!1
 this._moveCaretToTailOfSection(o.prev,!1)}else this.cursorDidExitAtTop()},handleCmdEnter:function(){if(!this._selectedCard)return!1
-this.editCard(this._selectedCard)},selectCard:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1]
+this.editCard(this._selectedCard)},handlePaste:function(e){var t=this.get("editor"),r=t.range
+if(r&&!r.isCollapsed&&r.headSection===r.tailSection&&r.headSection.isMarkerable){var n=(0,u.getContentFromPasteEvent)(e).text
+if(n&&s.default.isURL(n)){var i=t.builder.createMarkup("a",{href:n})
+t.run(function(e){e.addMarkupToRange(r,i)}),t.selectRange(r.tail),e.preventDefault(),e.stopImmediatePropagation()}}},selectCard:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1]
 if(e!==this._selectedCard||t!==e.isEditing){this._selectedCard&&e!==this._selectedCard&&this.deselectCard(this._selectedCard),e.setProperties({isEditing:t,isSelected:!0}),this._selectedCard=e,this._hideCursor()
 var r=this._getSectionFromCard(e)
-this._moveCaretToTailOfSection(r)}},editCard:function(e){e===this._selectedCard&&e.isEditing||this.selectCard(e,!0)},deselectCard:function(e){e.set("isEditing",!1),e.set("isSelected",!1),this._selectedCard=null,this._showCursor()},_getCardFromSection:function(e){if(e&&"card-section"===e.type){var t=e.renderNode.element.querySelector(".__mobiledoc-card").firstChild.id
+this._moveCaretToTailOfSection(r)}},editCard:function(e){e===this._selectedCard&&e.isEditing||this.selectCard(e,!0)},deselectCard:function(e){e.set("isEditing",!1),e.set("isSelected",!1),this._selectedCard=null,this._showCursor()},dragStart:function(e){e.preventDefault()},_getCardFromSection:function(e){if(e&&"card-section"===e.type){var t=e.renderNode.element.querySelector(".__mobiledoc-card").firstChild.id
 return this.get("componentCards").findBy("destinationElementId",t)}},_getSectionFromCard:function(e){return e.env.postModel},_moveCaretToHeadOfSection:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1]
 this._moveCaretToSection("head",e,t)},_moveCaretToTailOfSection:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1]
 this._moveCaretToSection("tail",e,t)},_moveCaretToSection:function(e,t){var r=this,n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2]
 this.editor.run(function(i){var o=("head"===e?t.headPosition():t.tailPosition()).toRange()
 n&&!o.isEqual(r.editor.range)&&(r._skipCursorChange=!0),i.setRange(o)})},_deleteCard:function(e,t){this.editor.run(function(r){var n=e.env.postModel,i=void 0
-i=-1===t?n.prev.tailPosition():n.next.headPosition(),r.removeSection(n),0!==t&&r.setRange(i)})},_hideCursor:function(){this.editor.element.style.caretColor="transparent"},_showCursor:function(){this.editor.element.style.caretColor="auto"},_setExpandoProperty:function(e){this.element&&Ember.testing&&(this.element[d]=e)}})}),define("koenig-editor/components/koenig-link-input",["exports","koenig-editor/templates/components/koenig-link-input","koenig-editor/components/koenig-toolbar"],function(e,t,r){"use strict"
+i=-1===t?n.prev.tailPosition():n.next.headPosition(),r.removeSection(n),0!==t&&r.setRange(i)})},_hideCursor:function(){this.editor.element.style.caretColor="transparent"},_showCursor:function(){this.editor.element.style.caretColor="auto"},_setExpandoProperty:function(e){this.element&&Ember.testing&&(this.element[h]=e)}})}),define("koenig-editor/components/koenig-link-input",["exports","koenig-editor/templates/components/koenig-link-input","koenig-editor/components/koenig-toolbar"],function(e,t,r){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 e.default=Ember.Component.extend({layout:t.default,attributeBindings:["style"],classNames:["kg-input-bar","absolute","z-999"],editor:null,linkRange:null,selectedRange:null,top:null,left:null,right:null,href:"",_selectedRange:null,_windowRange:null,_onMousedownHandler:null,_onMouseupHandler:null,cancel:function(){},style:Ember.computed("top","left","right",function(){var e=this.getProperties("top","left","right"),t=Object.keys(e).map(function(t){if(null!==e[t])return t+": "+e[t]+"px"})
 return Ember.String.htmlSafe(t.compact().join("; "))}),init:function(){this._super.apply(this,arguments),this._selectedRange=this.get("selectedRange"),this._linkRange=this.get("linkRange")
@@ -14427,8 +14444,9 @@ this.get("showMenu")||e===this._lastEditorRange||(this._showOrHideButton(e),this
 this.replaceWithCardSection(e,t),this._hideButton(),this._hideMenu()}},_showOrHideButton:function(e){if(!e)return this._hideButton(),void this._hideMenu()
 var t=e.head.section
 e&&e.isCollapsed&&t&&!t.isListItem&&(t.isBlank||""===t.text)?(this._editorRange=e,this._showButton(),this._hideMenu()):(this._hideButton(),this._hideMenu())},_showButton:function(){this._positionMenu(),this.set("showButton",!0)},_hideButton:function(){this.set("showButton",!1)},_positionMenu:function(){var e=(this._editorRange||this.get("editorRange")).head.section
-if(e){var t=this.element.parentNode.getBoundingClientRect(),r=e.renderNode.element.getBoundingClientRect().top-t.top
-this.set("top",r)}},_showMenu:function(){this.set("showMenu",!0),this._moveCaretToCachedEditorRange(),Ember.run.schedule("afterRender",this,function(){this._focusSearch()}),this._onWindowMousedownHandler=Ember.run.bind(this,this._handleWindowMousedown),window.addEventListener("mousedown",this._onWindowMousedownHandler),this._onKeydownHandler=Ember.run.bind(this,this._handleKeydown),window.addEventListener("keydown",this._onKeydownHandler)},_hideMenu:function(){this.get("showMenu")&&(this._editorRange=null,window.removeEventListener("mousedown",this._onWindowMousedownHandler),window.removeEventListener("keydown",this._onKeydownHandler),this.set("showMenu",!1))},_focusSearch:function(){var e=this.element.querySelector("input")
+if(e){var t=this.element.parentNode.getBoundingClientRect(),r=e.renderNode.element
+if(r){var n=r.getBoundingClientRect().top-t.top
+this.set("top",n)}}},_showMenu:function(){this.set("showMenu",!0),this._moveCaretToCachedEditorRange(),Ember.run.schedule("afterRender",this,function(){this._focusSearch()}),this._onWindowMousedownHandler=Ember.run.bind(this,this._handleWindowMousedown),window.addEventListener("mousedown",this._onWindowMousedownHandler),this._onKeydownHandler=Ember.run.bind(this,this._handleKeydown),window.addEventListener("keydown",this._onKeydownHandler)},_hideMenu:function(){this.get("showMenu")&&(this._editorRange=null,window.removeEventListener("mousedown",this._onWindowMousedownHandler),window.removeEventListener("keydown",this._onKeydownHandler),this.set("showMenu",!1))},_focusSearch:function(){var e=this.element.querySelector("input")
 e&&e.focus()},_handleWindowMousedown:function(e){e.target.closest("#"+this.elementId)||this._hideMenu()},_mousemoveRaf:function(e){this._mousemoveTicking||requestAnimationFrame(Ember.run.bind(this,this._handleMousemove,e)),this._mousemoveTicking=!0},_handleMousemove:function(e){if(!this.get("showMenu")){var t=e.pageX,r=e.pageY,n=this.get("editor")
 t<this.element.parentNode.getBoundingClientRect().left&&(t+=40)
 var i=n.positionAtPoint(t,r)
@@ -14498,7 +14516,7 @@ e.run(function(t){var n=t.builder.createCardSection("image",{src:a,alt:s}),i=!o.
 if(e.range.extend(-r[0].length),t.replaceSection(e.range.headSection,n),i){var l=e.builder.createMarkupSection("p")
 t.insertSectionAtEnd(l),t.setRange(l.tailPosition())}})}}(e,r)
 break
-case"~":(function(e,t){var r=e.range,n=t.match(/(?:^|\s)~([^\s~]+|[^\s~][^~]*[^\s])~/)
+case"~":(function(e,t){var r=e.range,n=t.match(/(?:^|\s)~~([^\s~]+|[^\s~][^~]*[^\s])~~/)
 if(n){var i=n[0].trim()
 r=r.extend(-i.length),e.run(function(e){var t=e.deleteRange(r),i=e.builder.createMarkup("s")
 e.insertTextWithMarkup(t,n[1],[i])}),Ember.run.schedule("actions",this,function(){e.toggleMarkup("s")})}})(e,r)
