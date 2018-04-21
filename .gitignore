@@ -47,6 +47,7 @@ Session.vim
 /core/server/data/export/exported*
 /content/tmp/*
 /content/data/*
+/content/files/*
 /content/logs/*
 /content/settings/*
 /content/apps/**/*
@@ -73,10 +74,17 @@ CHANGELOG.md
 !config.channels.json
 
 # Built asset files
-/core/built
-/core/server/web/admin/views/*
-/core/server/public/ghost-sdk.min.js
-/core/server/public/ghost.min.css
+# /core/built
+# /core/server/web/admin/views/*
+# /core/server/public/ghost-sdk.min.js
+# /core/server/public/ghost.min.css
+
+# Dev files
+/core/client
+/core/built/assets/test*
+/core/built/assets/vendor-*
+/core/built/assets/ghost-*
+!core/built/assets/ghost-dark-*
 
 # Coverage reports
 coverage.html
